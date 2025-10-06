@@ -625,7 +625,20 @@ Suppose we draw a dataflow graph with the above nodes.
 
 https://forms.gle/6FB5hhwKpokTHhit9
 
+Answer: 
+
+       -> (max) --|
+(read) -> (min) --|> (print), (save)
+       -> (avg) --|
+
 Key points:
+
+    Two "independent" computations will not have an edge one way or the other (printing produces output to the terminal, save produces output to a file, neither one is used by the other)
+
+    We can read off dependence information from the graph! If there is a path from A to B, then B depends (either directly or indirectly) on A
+
+    What graph we get depends on the precise details of our stages. Ex. if we load the input three different times, once for the max, once for the min, and once for the avg (and this is listed in our description
+    of the computation). we would get a different graph with 
 
 
 === A few more things ===
@@ -636,9 +649,13 @@ A couple of more definitions:
 
 point: The dataflow graph reveals exactly which computations depend on which others!
 
-- A *source* is...
+- A *source* isa node without any input edges
+    (typically a node which loads data from an external source)
+    (corresponds to the E stage of ETL model)
 
-- A *sink* is ...
+- A *sink* is a node without any output edges
+    (typically a node which saves data to an external source)
+    (corresponds to the L stage of ETL model)
 
 point: The dataflow graph reveals exactly where the I/O operations are for your pipeline.
 
